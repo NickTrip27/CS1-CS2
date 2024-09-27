@@ -1,0 +1,10 @@
+#PROMPT user to enter an adjective 
+proper_noun = input("Enter a proper_noun: ")
+adjective = input("Enter an adjective that goes with your proper_noun: ")
+place = input("Enter a place: ")
+thing = input("Enter an object: ")
+orginization = input("Enter an orginization: ")
+
+
+print (f"Once upon a time, there was a {adjective} {proper_noun}. The {adjective} {proper_noun} went on a trip to {place}. While in {place} {proper_noun} had an acident. They hit a {thing}. Because they hit a {thing}, they were sent home my the {orginization}. The end!")
+
