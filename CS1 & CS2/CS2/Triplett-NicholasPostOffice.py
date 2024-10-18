@@ -3,13 +3,13 @@ Name: Nicholas Triplett
 
 Description: Acts as a postal service and calculates the cost of shipping certain items. The program takes in the diameters of the item and the too+from destinations, and calculates a cost depending on all five of these variables.
 
-Bugs: None
+Bugs: The code cannot handle if a special character is entered. 
 
 Features: None
 
 Sources: W3 Schools - https://www.w3schools.com/ - Code Academy - https://www.codecademy.com/
 
-Log: 1.0 (initial release)
+Log: 1.2 (second release)
 '''
 
 def get_type(length,height,thickness):
@@ -72,13 +72,15 @@ def get_zone(zip):
         return 5
     elif zip > 85000 and zip < 99999:
         return 6
-def cost(size,zone):
+    else:
+        print("Invalid Zipcode - Please enter a correct zip code")
+def cost(size,distance):
     """
     Determines the cost it will take for the user to ship their item
 
     Args:
         size(str): The mail type found earlier in get_type
-        zone(int): The distance of zones the mail will travel determined by the difference of the zip zones
+        distance(int): The distance of zones the mail will travel determined by the difference of the zip zones
 
     Returns:
         int: A number which is the cost of the shipping
@@ -90,17 +92,17 @@ def cost(size,zone):
     #Each if/elif finds the mail type and applies a calculation that is influenced by the zone 
     #It returns a final cost of the shipping 
     if size == 'Regular Post Card':
-        return .20+.03*zone
+        return .20+.03*distance 
     elif size == 'Large Post Card':
-        return .37+.03*zone
+        return .37+.03*distance
     elif size == 'Regular Envelope':
-        return .37+.04*zone
+        return .37+.04*distance
     elif size == 'Large Envelope':
-        return .60+.05*zone
+        return .60+.05*distance
     elif size == 'Package':
-        return 2.95+.25*zone
+        return 2.95+.25*distance
     elif size == 'Large Package':
-        return 3.95+.35*zone
+        return 3.95+.35*distance
     
 
 def main ():
@@ -120,7 +122,20 @@ def main ():
             if item.isalpha():                      #if one of these indexs inputed is a letter(In the alphabet) it will tell the user they used incorrect formatting, and will re ask for their data
                 data = input("Incorrect format, you entered a letter! Please enter your length, height, thickness(width), the postal code you are shipping from, the postal code you are shipping to(all in numbers please): ")
                 continue                            #Allows the while true to continue running and re scan the new data
-          
+            elif '.' in data[0]:                    #Checks if someone entered a decimal point throughout these four index's - if someone did, it will re ask for correct data 
+                data = input("Invalid, you entered a decimal! Please enter your length, height, thickness(width), the postal code you are shipping from, the postal code you are shipping to(all in numbers please):")
+                continue
+            elif '.' in data[1]:
+                data = input("Invalid, you entered a decimal! Please enter your length, height, thickness(width), the postal code you are shipping from, the postal code you are shipping to(all in numbers please):")
+                continue
+            elif '.' in data[3]:
+                data = input("Invalid, you entered a decimal! Please enter your length, height, thickness(width), the postal code you are shipping from, the postal code you are shipping to(all in numbers please):")
+                continue
+            elif '.' in data[4]:
+                data = input("Invalid, you entered a decimal! Please enter your length, height, thickness(width), the postal code you are shipping from, the postal code you are shipping to(all in numbers please):")
+                continue
+            
+        
         if len(data) != 5:                          #Checks if the users did not enter 5 inputs
             data = input("Incorrect format! Please enter your length, height, thickness(width), the postal code you are shipping from, the postal code you are shipping to(all in numbers please): ")
                                                     #If there is not 5 indexs, it will tell the user they incorrectly formatted and re asks for their data 
@@ -134,15 +149,16 @@ def main ():
     thickness = float(data[2])                      #Creates a variable 'thickness' that stores the value of the users third input as a float
     zipfrom = int(data[3])                          #Creates a variable 'zipfrom' that stores the value of the users fourth input as an integer
     ziptoo = int(data[4])                           #Creates a variable 'ziptoo' that stores the value of the users fifth input as an integer
+
+
+    distance = abs(get_zone(zipfrom) - get_zone(ziptoo))                   #Creates a variable 'distance', that calls the getzone function, and subtracts the returns. The abs makes sure the return is a positive integer
     
-    
-    distance = abs(get_zone(zipfrom - get_zone(ziptoo)))                    #Creates a variable 'distance', that calls the getzone function, and subtracts the returns. The abs makes sure the return is a positive integer
     ship_type = get_type(length,height,thickness)                           #Creates a variable 'ship_type', that calls the get_type function and sets the returned mailing type into the variable
     final = cost(ship_type,distance)                                        #Creates a variable 'final' that calls the cost function and sets the returned cost to the variable
-    final = str(final)                                                      #Makes the final variable which stores the final cost a string
-    final = final.lstrip("0")                                               #Because the variable final is now a string, the function lstrip is set to remove the leading zero
-    
-    print(f"You will need a {ship_type}, and the cost will be: ${final}")   #Prints to the user what their final mail type is, and their final shipping cost by printing the ship_type and final variables
+                                                    
+    print(str("%.2f" %final).lstrip('0'))                    #Prints to the user what their final mail type is, and their final shipping cost by printing the ship_type and final variables
+                                                             #Makes the final variable which stores the final cost a string
+                                                             #Because the variable final is now a string, the function lstrip is set to remove the leading zero
     
     
     
